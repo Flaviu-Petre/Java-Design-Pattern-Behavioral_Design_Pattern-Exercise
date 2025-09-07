@@ -20,6 +20,8 @@ import com.example.IteratorPattern.Interface.Iterator;
 import com.example.IteratorPattern.Song;
 import com.example.MediatorPattern.ChatRoomMediator;
 import com.example.MediatorPattern.Participant;
+import com.example.ObserverDesignPattern.WeatherObserver;
+import com.example.ObserverDesignPattern.WeatherStation;
 
 public class Main {
     public static void main(String[] args) {
@@ -27,7 +29,8 @@ public class Main {
         //CommandPattern();
         //InterpreterPattern();
         //IteratorPattern();
-        MediatorPattern();
+        //MediatorPattern();
+        ObserverPattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -272,5 +275,76 @@ public class Main {
         System.out.println();
 
         System.out.println("=== Mediator Pattern Test Complete ===");
+    }
+
+    private static void ObserverPattern() {
+        System.out.println("=== Observer Pattern Test ===\n");
+
+        WeatherStation weatherStation = new WeatherStation();
+
+        System.out.println("Creating weather observers:\n");
+
+        WeatherObserver mobileApp = new WeatherObserver("Mobile Weather App");
+        WeatherObserver desktopWidget = new WeatherObserver("Desktop Widget");
+        WeatherObserver webDashboard = new WeatherObserver("Web Dashboard");
+        WeatherObserver smartWatch = new WeatherObserver("Smart Watch");
+
+        System.out.println("=== Observer Registration Test ===");
+        weatherStation.addObserver(mobileApp);
+        weatherStation.addObserver(desktopWidget);
+        weatherStation.addObserver(webDashboard);
+        weatherStation.addObserver(smartWatch);
+
+        System.out.println("Total observers registered: " + weatherStation.getObserverCount() + "\n");
+
+        System.out.println("=== Weather Update Test ===");
+        System.out.println("Updating weather conditions...\n");
+        weatherStation.setState(25, 65, 1013);
+
+        System.out.println("\n" + "-".repeat(60) + "\n");
+
+        System.out.println("=== Second Weather Update Test ===");
+        System.out.println("Weather conditions changing...\n");
+        weatherStation.setState(18, 80, 995);
+
+        System.out.println("\n" + "-".repeat(60) + "\n");
+
+        System.out.println("=== Observer Removal Test ===");
+        weatherStation.removeObserver(smartWatch);
+        System.out.println("Smart Watch unsubscribed from weather updates.");
+        System.out.println("Remaining observers: " + weatherStation.getObserverCount() + "\n");
+
+        System.out.println("Updating weather after removal...\n");
+        weatherStation.setState(30, 45, 1020);
+
+        System.out.println("\n" + "-".repeat(60) + "\n");
+
+        System.out.println("=== Duplicate Observer Prevention Test ===");
+        weatherStation.addObserver(smartWatch);
+        System.out.println("Smart Watch re-subscribed.");
+
+        System.out.println("Attempting to add Smart Watch again (should prevent duplicate):");
+        weatherStation.addObserver(smartWatch);
+        System.out.println("Total observers: " + weatherStation.getObserverCount() + "\n");
+
+        System.out.println("=== Final Weather Update Test ===");
+        System.out.println("Final weather update...\n");
+        weatherStation.setState(22, 70, 1008);
+
+        System.out.println("\n" + "-".repeat(60) + "\n");
+
+        System.out.println("=== Remove All Observers Test ===");
+        weatherStation.removeObserver(mobileApp);
+        weatherStation.removeObserver(desktopWidget);
+        weatherStation.removeObserver(webDashboard);
+        weatherStation.removeObserver(smartWatch);
+
+        System.out.println("All observers removed. Remaining: " + weatherStation.getObserverCount());
+        System.out.println("Updating weather with no observers...\n");
+        weatherStation.setState(15, 90, 980);
+
+        System.out.println("No observers were notified (as expected).\n");
+
+        System.out.println("=== Observer Pattern Test Complete ===");
     }
 }
