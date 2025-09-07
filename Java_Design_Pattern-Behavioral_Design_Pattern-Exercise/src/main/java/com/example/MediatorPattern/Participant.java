@@ -15,6 +15,11 @@ public class Participant {
 
     public void sendMessage(String message) {
         System.out.println(this.name + " sends: " + message);
+        chatRoom.sendMessage(message, this);
+    }
+
+    public void receive(String message, String senderName) {
+        System.out.println(this.name + " receives from " + senderName + ": " + message);
     }
 
 }
