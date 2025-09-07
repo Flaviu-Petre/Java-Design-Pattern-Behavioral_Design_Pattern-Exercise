@@ -13,11 +13,14 @@ import com.example.CommandPattern.Invoker.RemoteControlInvoker;
 import com.example.CommandPattern.ReceiverClasses.Fan;
 import com.example.CommandPattern.ReceiverClasses.Light;
 import com.example.CommandPattern.ReceiverClasses.Thermostat;
+import com.example.InterpreterPattern.Interface.Expression;
+import com.example.InterpreterPattern.ParserClass.ExpressionParser;
 
 public class Main {
     public static void main(String[] args) {
         //ChainOfResponsibilityPattern();
-        CommandPattern();
+        //CommandPattern();
+        InterpreterPattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -112,5 +115,49 @@ public class Main {
         thermostat.decreaseTemperature();
 
         System.out.println("=== Command Pattern Test Complete ===");
+    }
+
+    private static void InterpreterPattern() {
+        System.out.println("=== Interpreter Pattern Test ===\n");
+
+        // Create the parser
+        ExpressionParser parser = new ExpressionParser();
+
+        // Test cases with different arithmetic expressions
+        String[] testExpressions = {
+                "5",
+                "10 + 3",
+                "15 - 7",
+                "4 * 6",
+                "20 / 4",
+                "10 + 5 - 3",
+                "2 * 3 + 4",
+                "20 / 4 + 3",
+                "15 - 3 * 2",
+                "100 / 10 - 5"
+        };
+
+        System.out.println("Testing various arithmetic expressions:\n");
+
+        for (String expr : testExpressions) {
+            try {
+                System.out.println("Expression: " + expr);
+
+                Expression parsedExpression = parser.parse(expr);
+
+                // Interpret the expression to get the result
+                int result = parsedExpression.interpret();
+
+                System.out.println("Result: " + result);
+                System.out.println("Evaluation: " + expr + " = " + result);
+                System.out.println("-".repeat(30));
+
+            } catch (Exception e) {
+                System.out.println("Error parsing expression '" + expr + "': " + e.getMessage());
+                System.out.println("-".repeat(30));
+            }
+        }
+
+        System.out.println("=== Interpreter Pattern Test Complete ===");
     }
 }
