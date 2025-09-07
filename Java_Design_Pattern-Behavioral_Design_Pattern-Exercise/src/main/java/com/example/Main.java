@@ -15,12 +15,16 @@ import com.example.CommandPattern.ReceiverClasses.Light;
 import com.example.CommandPattern.ReceiverClasses.Thermostat;
 import com.example.InterpreterPattern.Interface.Expression;
 import com.example.InterpreterPattern.ParserClass.ExpressionParser;
+import com.example.IteratorPattern.Collection.PlaylistCollection;
+import com.example.IteratorPattern.Interface.Iterator;
+import com.example.IteratorPattern.Song;
 
 public class Main {
     public static void main(String[] args) {
         //ChainOfResponsibilityPattern();
         //CommandPattern();
-        InterpreterPattern();
+        //InterpreterPattern();
+        IteratorPattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -159,5 +163,43 @@ public class Main {
         }
 
         System.out.println("=== Interpreter Pattern Test Complete ===");
+    }
+
+    private static void IteratorPattern() {
+        System.out.println("=== Iterator Pattern Test ===\n");
+
+        PlaylistCollection myPlaylist = new PlaylistCollection();
+
+        System.out.println("Creating playlist and adding songs:\n");
+
+        Song[] songs = {
+                new Song("Bohemian Rhapsody", "Queen"),
+                new Song("Hotel California", "Eagles"),
+                new Song("Stairway to Heaven", "Led Zeppelin"),
+                new Song("Sweet Child O' Mine", "Guns N' Roses"),
+                new Song("Imagine", "John Lennon"),
+                new Song("Billie Jean", "Michael Jackson")
+        };
+
+        for (Song song : songs) {
+            myPlaylist.addSong(song);
+            System.out.println("Added: " + song);
+        }
+
+        System.out.println("\nPlaylist created with " + myPlaylist.size() + " songs.\n");
+        
+        System.out.println("=== Basic Iteration Test ===");
+        System.out.println("Playing all songs in the playlist:\n");
+
+        Iterator<Song> iterator = myPlaylist.getIterator();
+        int songNumber = 1;
+
+        while (iterator.hasNext()) {
+            Song currentSong = iterator.next();
+            System.out.println(songNumber + ". Now playing: " + currentSong);
+            songNumber++;
+        }
+
+        System.out.println("=== Iterator Pattern Test Complete ===");
     }
 }
