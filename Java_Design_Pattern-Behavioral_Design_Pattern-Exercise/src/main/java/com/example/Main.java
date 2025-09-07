@@ -22,6 +22,7 @@ import com.example.MediatorPattern.ChatRoomMediator;
 import com.example.MediatorPattern.Participant;
 import com.example.ObserverDesignPattern.WeatherObserver;
 import com.example.ObserverDesignPattern.WeatherStation;
+import com.example.StatePattern.ContextClass.TrafficLight;
 
 public class Main {
     public static void main(String[] args) {
@@ -30,7 +31,8 @@ public class Main {
         //InterpreterPattern();
         //IteratorPattern();
         //MediatorPattern();
-        ObserverPattern();
+        //ObserverPattern();
+        StatePattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -346,5 +348,50 @@ public class Main {
         System.out.println("No observers were notified (as expected).\n");
 
         System.out.println("=== Observer Pattern Test Complete ===");
+    }
+
+    private static void StatePattern() {
+        System.out.println("=== State Pattern Test ===\n");
+
+        TrafficLight trafficLight = new TrafficLight();
+
+        System.out.println("=== Initial State Test ===");
+        System.out.println("Traffic light starts in: " + trafficLight.getCurrentStateName());
+        trafficLight.displayCurrentState();
+        System.out.println();
+
+        System.out.println("=== Individual State Transitions ===");
+
+        System.out.println("1. First transition:");
+        trafficLight.nextState();
+        trafficLight.displayCurrentState();
+        System.out.println();
+
+        System.out.println("2. Second transition:");
+        trafficLight.nextState();
+        trafficLight.displayCurrentState();
+        System.out.println();
+
+        System.out.println("3. Third transition:");
+        trafficLight.nextState();
+        trafficLight.displayCurrentState();
+        System.out.println();
+
+        System.out.println("-".repeat(50) + "\n");
+
+        System.out.println("=== Complete Cycle Test ===");
+        System.out.println("Running through a complete traffic light cycle:\n");
+        
+        for (int i = 1; i <= 3; i++) {
+            System.out.println("Cycle step " + i + ":");
+            trafficLight.operate();
+        }
+
+        System.out.println("=== Verification Test ===");
+        System.out.println("After complete cycle, back to: " + trafficLight.getCurrentStateName());
+        trafficLight.displayCurrentState();
+        System.out.println();
+
+        System.out.println("=== State Pattern Test Complete ===");
     }
 }
