@@ -18,13 +18,16 @@ import com.example.InterpreterPattern.ParserClass.ExpressionParser;
 import com.example.IteratorPattern.Collection.PlaylistCollection;
 import com.example.IteratorPattern.Interface.Iterator;
 import com.example.IteratorPattern.Song;
+import com.example.MediatorPattern.ChatRoomMediator;
+import com.example.MediatorPattern.Participant;
 
 public class Main {
     public static void main(String[] args) {
         //ChainOfResponsibilityPattern();
         //CommandPattern();
         //InterpreterPattern();
-        IteratorPattern();
+        //IteratorPattern();
+        MediatorPattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -187,7 +190,7 @@ public class Main {
         }
 
         System.out.println("\nPlaylist created with " + myPlaylist.size() + " songs.\n");
-        
+
         System.out.println("=== Basic Iteration Test ===");
         System.out.println("Playing all songs in the playlist:\n");
 
@@ -201,5 +204,73 @@ public class Main {
         }
 
         System.out.println("=== Iterator Pattern Test Complete ===");
+    }
+
+    private static void MediatorPattern() {
+        System.out.println("=== Mediator Pattern Test ===\n");
+
+        ChatRoomMediator chatRoom = new ChatRoomMediator();
+
+        System.out.println("Creating chat room participants:\n");
+
+        Participant alice = new Participant("Alice", chatRoom);
+        Participant bob = new Participant("Bob", chatRoom);
+        Participant charlie = new Participant("Charlie", chatRoom);
+        Participant diana = new Participant("Diana", chatRoom);
+
+        chatRoom.adduser(alice);
+        chatRoom.adduser(bob);
+        chatRoom.adduser(charlie);
+        chatRoom.adduser(diana);
+
+        System.out.println("\nChat room now has " + chatRoom.getUserCount() + " participants.\n");
+
+        alice.sendMessage("Hello everyone!");
+        System.out.println();
+
+        bob.sendMessage("Hi Alice! How are you?");
+        System.out.println();
+
+        charlie.sendMessage("Good morning all!");
+        System.out.println();
+
+        System.out.println("-".repeat(50) + "\n");
+
+        System.out.println("=== Self-Message Prevention Test ===");
+        System.out.println("Testing that senders don't receive their own messages:");
+        diana.sendMessage("This message should not echo back to Diana");
+        System.out.println();
+
+        System.out.println("-".repeat(50) + "\n");
+
+        // Test removing a participant
+        System.out.println("=== Participant Removal Test ===");
+        chatRoom.removeUser(charlie);
+        System.out.println("Participants remaining: " + chatRoom.getUserCount());
+        System.out.println("\nSending message after Charlie left:");
+        alice.sendMessage("Charlie won't receive this message");
+        System.out.println();
+
+        System.out.println("-".repeat(50) + "\n");
+
+        // Test multiple messages in conversation
+        System.out.println("=== Conversation Flow Test ===");
+        System.out.println("Simulating a natural conversation:");
+        bob.sendMessage("What's everyone up to today?");
+        System.out.println();
+
+        diana.sendMessage("I'm working on some coding projects");
+        System.out.println();
+
+        alice.sendMessage("Same here! Learning design patterns");
+        System.out.println();
+
+        bob.sendMessage("That's great! Which pattern are you studying?");
+        System.out.println();
+
+        alice.sendMessage("Currently working on the Mediator pattern");
+        System.out.println();
+
+        System.out.println("=== Mediator Pattern Test Complete ===");
     }
 }
