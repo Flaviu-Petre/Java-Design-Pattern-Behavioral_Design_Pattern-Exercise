@@ -28,6 +28,10 @@ import com.example.StrategyPattern.ConcreteClasses.CreditCardPaymentStrategy;
 import com.example.StrategyPattern.ConcreteClasses.PayPalPaymentStrategy;
 import com.example.StrategyPattern.PaymentStrategy;
 import com.example.StrategyPattern.ShoppingCart;
+import com.example.TemplateMethodPattern.AbstractClass.ReportTemplate;
+import com.example.TemplateMethodPattern.ConcreteClasses.FinancialReport;
+import com.example.TemplateMethodPattern.ConcreteClasses.InventoryReport;
+import com.example.TemplateMethodPattern.ConcreteClasses.SalesReport;
 
 public class Main {
     public static void main(String[] args) {
@@ -38,7 +42,8 @@ public class Main {
         //MediatorPattern();
         //ObserverPattern();
         //StatePattern();
-        StrategyPattern();
+        //StrategyPattern();
+        TemplateMethodPattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -467,5 +472,62 @@ public class Main {
         }
 
         System.out.println("\n=== Strategy Pattern Test Complete ===");
+    }
+
+    private static void TemplateMethodPattern() {
+        System.out.println("=== Template Method Pattern Test ===\n");
+
+        System.out.println("Testing different report types using the same template algorithm:\n");
+
+        System.out.println("=== Financial Report Generation ===");
+        ReportTemplate financialReport = new FinancialReport();
+        System.out.println("Generating Financial Report:");
+        financialReport.generateReport();
+        System.out.println("Financial report completed\n");
+
+        System.out.println("-".repeat(50) + "\n");
+
+        System.out.println("=== Sales Report Generation ===");
+        ReportTemplate salesReport = new SalesReport();
+        System.out.println("Generating Sales Report:");
+        salesReport.generateReport();
+        System.out.println("Sales report completed\n");
+
+        System.out.println("-".repeat(50) + "\n");
+
+        System.out.println("=== Inventory Report Generation ===");
+        ReportTemplate inventoryReport = new InventoryReport();
+        System.out.println("Generating Inventory Report:");
+        inventoryReport.generateReport();
+        System.out.println("Inventory report completed\n");
+
+        System.out.println("-".repeat(50) + "\n");
+
+        System.out.println("=== Polymorphic Behavior Test ===");
+        System.out.println("Processing multiple report types using the same template method:\n");
+
+        ReportTemplate[] reports = {
+                new FinancialReport(),
+                new SalesReport(),
+                new InventoryReport()
+        };
+
+        String[] reportNames = {"Financial", "Sales", "Inventory"};
+
+        for (int i = 0; i < reports.length; i++) {
+            System.out.println("Processing " + reportNames[i] + " Report:");
+            reports[i].generateReport();
+            System.out.println();
+        }
+
+        System.out.println("-".repeat(50) + "\n");
+
+        System.out.println("=== Template Method Algorithm Verification ===");
+
+        financialReport.generateReport();
+        System.out.println();
+
+
+        System.out.println("\n=== Template Method Pattern Test Complete ===");
     }
 }
