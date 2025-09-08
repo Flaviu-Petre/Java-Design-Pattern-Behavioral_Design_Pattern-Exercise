@@ -23,6 +23,11 @@ import com.example.MediatorPattern.Participant;
 import com.example.ObserverDesignPattern.WeatherObserver;
 import com.example.ObserverDesignPattern.WeatherStation;
 import com.example.StatePattern.ContextClass.TrafficLight;
+import com.example.StrategyPattern.ConcreteClasses.BankTransferPaymentStrategy;
+import com.example.StrategyPattern.ConcreteClasses.CreditCardPaymentStrategy;
+import com.example.StrategyPattern.ConcreteClasses.PayPalPaymentStrategy;
+import com.example.StrategyPattern.PaymentStrategy;
+import com.example.StrategyPattern.ShoppingCart;
 
 public class Main {
     public static void main(String[] args) {
@@ -32,7 +37,8 @@ public class Main {
         //IteratorPattern();
         //MediatorPattern();
         //ObserverPattern();
-        StatePattern();
+        //StatePattern();
+        StrategyPattern();
     }
 
     private static void ChainOfResponsibilityPattern() {
@@ -381,7 +387,7 @@ public class Main {
 
         System.out.println("=== Complete Cycle Test ===");
         System.out.println("Running through a complete traffic light cycle:\n");
-        
+
         for (int i = 1; i <= 3; i++) {
             System.out.println("Cycle step " + i + ":");
             trafficLight.operate();
@@ -393,5 +399,73 @@ public class Main {
         System.out.println();
 
         System.out.println("=== State Pattern Test Complete ===");
+    }
+
+    private static void StrategyPattern() {
+        System.out.println("=== Strategy Pattern Test ===\n");
+
+        ShoppingCart cart = new ShoppingCart();
+        double purchaseAmount = 299.99;
+
+        System.out.println("Testing different payment strategies for amount: $" + purchaseAmount + "\n");
+
+        System.out.println("=== Credit Card Payment Test ===");
+        PaymentStrategy creditCardStrategy = new CreditCardPaymentStrategy("**** **** **** 1234");
+        cart.setPaymentStrategy(creditCardStrategy);
+        cart.checkout(purchaseAmount);
+        System.out.println();
+
+        System.out.println("=== PayPal Payment Test ===");
+        PaymentStrategy paypalStrategy = new PayPalPaymentStrategy("user@example.com");
+        cart.setPaymentStrategy(paypalStrategy);
+        cart.checkout(purchaseAmount);
+        System.out.println();
+
+        System.out.println("=== Bank Transfer Payment Test ===");
+        PaymentStrategy bankTransferStrategy = new BankTransferPaymentStrategy("ACC-123456789");
+        cart.setPaymentStrategy(bankTransferStrategy);
+        cart.checkout(purchaseAmount);
+        System.out.println();
+
+        System.out.println("-".repeat(60) + "\n");
+
+        System.out.println("=== Runtime Strategy Switching Test ===");
+        System.out.println("Processing multiple purchases with different payment methods:\n");
+
+        double[] amounts = {49.99, 129.50, 75.25};
+        PaymentStrategy[] strategies = {
+                new CreditCardPaymentStrategy("**** **** **** 5678"),
+                new PayPalPaymentStrategy("customer@shop.com"),
+                new BankTransferPaymentStrategy("ACC-987654321")
+        };
+        String[] strategyNames = {"Credit Card", "PayPal", "Bank Transfer"};
+
+        for (int i = 0; i < amounts.length; i++) {
+            System.out.println("Purchase " + (i + 1) + " - Using " + strategyNames[i] + ":");
+            cart.setPaymentStrategy(strategies[i]);
+            cart.checkout(amounts[i]);
+            System.out.println();
+        }
+
+        System.out.println("-".repeat(60) + "\n");
+
+        System.out.println("=== Polymorphic Behavior Test ===");
+        System.out.println("Demonstrating that all strategies implement the same interface:\n");
+
+        PaymentStrategy[] allStrategies = {
+                new CreditCardPaymentStrategy("**** **** **** 9999"),
+                new PayPalPaymentStrategy("test@polymorphism.com"),
+                new BankTransferPaymentStrategy("ACC-POLY123")
+        };
+
+        double testAmount = 100.00;
+
+        for (int i = 0; i < allStrategies.length; i++) {
+            System.out.println("Strategy " + (i + 1) + " (" + allStrategies[i].getClass().getSimpleName() + "):");
+            allStrategies[i].processPayment(testAmount);
+            System.out.println();
+        }
+
+        System.out.println("\n=== Strategy Pattern Test Complete ===");
     }
 }
